@@ -146,9 +146,30 @@ bool oled_task_user(void) {
     oled_write(get_u8_str(get_current_wpm(), '0'), false);
     oled_write(wpm_str, false);                       // writes wpm on top left corner of string
 
-    led_t led_state = host_keyboard_led_state();  // caps lock stuff, prints CAPS on new line if caps led is on
-    oled_set_cursor(0, 1);
-    oled_write_P(led_state.caps_lock ? PSTR("CAPS") : PSTR("       "), false);
+  // Host Keyboard Layer Status
+  oled_write_P(PSTR("Layer~"), false);
+  switch (get_highest_layer(layer_state)) {
+    case 0:
+      oled_write_ln_P(PSTR("BAS"), false);
+      break;
+    case 1:
+      oled_write_ln_P(PSTR("CAD"), false);
+      break;
+    case 2:
+      oled_write_ln_P(PSTR("FL"), false);
+      break;
+    default:
+      // Or use the write_ln shortcut over adding '\n' to the end of your string
+      oled_write_ln_P(PSTR("UND"), false);
+  }
+
+  // Host Keyboard LED Status
+  led_t led_state = host_keyboard_led_state();
+//   oled_write_P(PSTR("-----"), false);
+  // oled_write_P(PSTR("Stats~"), false);
+  oled_write_P(led_state.num_lock ? PSTR("NUM") : PSTR("  "), false);
+  oled_write_P(led_state.caps_lock ? PSTR("CAPS") : PSTR("  "), false);
+
 
     return false;
 }
