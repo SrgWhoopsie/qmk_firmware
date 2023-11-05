@@ -16,7 +16,7 @@
 #include "quantum.h"
 
 #include <stdio.h>
-char wpm_str[10];
+char wpm_str[1];
 
 #ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
@@ -53,8 +53,8 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 // #define SLEEP_TIMER 60000 // should sleep after this period of 0 wpm, needs fixing
 #    define ANIM_SIZE 636  // number of bytes in array, minimize for adequate firmware size, max is 1024
 
-uint32_t anim_timer         = 0;
-uint32_t anim_sleep         = 0;
+uint32_t anim_timer         = 60;
+uint32_t anim_sleep         = 600;
 uint8_t  current_idle_frame = 0;
 // uint8_t current_prep_frame = 0; // uncomment if PREP_FRAMES >1
 uint8_t current_tap_frame = 0;
@@ -139,36 +139,40 @@ static void render_anim(void) {
 
 // Used to draw on to the oled screen
 bool oled_task_user(void) {
+
     render_anim();  // renders pixelart
-
-    oled_set_cursor(0, 0);                            // sets cursor to (row, column) using charactar spacing (5 rows on 128x32 screen, anything more will overflow back to the top)
-    oled_write_P(PSTR("WPM: "), false);
-    oled_write(get_u8_str(get_current_wpm(), '0'), false);
-    oled_write(wpm_str, false);                       // writes wpm on top left corner of string
-
   // Host Keyboard Layer Status
   oled_write_P(PSTR("Layer~"), false);
   switch (get_highest_layer(layer_state)) {
     case 0:
-      oled_write_ln_P(PSTR("BAS"), false);
+      oled_write_P(PSTR("BAS"), false);
       break;
     case 1:
-      oled_write_ln_P(PSTR("CAD"), false);
+      oled_write_P(PSTR("CAD"), false);
       break;
     case 2:
-      oled_write_ln_P(PSTR("FL"), false);
+      oled_write_P(PSTR("FL"), false);
       break;
     default:
       // Or use the write_ln shortcut over adding '\n' to the end of your string
-      oled_write_ln_P(PSTR("UND"), false);
-  }
+      oled_write_P(PSTR("UND"), false);
+    }
+
+
+    // oled_write_P(PSTR("WPM: "), false);
+    // oled_write(get_u8_str(get_current_wpm(), '0'), false);
+    // oled_write(wpm_str, false);                       // writes wpm on top left corner of string
+
+
 
   // Host Keyboard LED Status
   led_t led_state = host_keyboard_led_state();
 //   oled_write_P(PSTR("-----"), false);
   // oled_write_P(PSTR("Stats~"), false);
-  oled_write_P(led_state.num_lock ? PSTR("NUM") : PSTR("  "), false);
-  oled_write_P(led_state.caps_lock ? PSTR("CAPS") : PSTR("  "), false);
+  oled_set_cursor(0, 1);                            // sets cursor to (row, column) using charactar spacing (5 rows on 128x32 screen, anything more will overflow back to the top)
+  oled_write_P(led_state.caps_lock ? PSTR("CAPS") : PSTR(""), false);
+  oled_write_P(led_state.num_lock ? PSTR("NUM") : PSTR(""), false);
+  
 
 
     return false;

@@ -15,7 +15,7 @@
  */
 #include QMK_KEYBOARD_H
 #include <stdio.h>
-char wpm_str[10];
+char wpm_str[1];
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.

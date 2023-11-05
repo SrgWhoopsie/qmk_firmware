@@ -17,3 +17,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #define ENCODER_DIRECTION_FLIP
+#define OLED_BRIGHTNESS 40
+#define SLEEP_TIMER 120000 // should sleep after this period of 0 wpm, needs fixing
+// #define OLED_DISPLAY_CLOCK 
+#define OLED_FONT_SUPER_DIGG
+#define OLED_FADE_OUT
+#define OLED_FADE_OUT_INTERVAL 5
+// #define OLED_SCROLL_TIMEOUT 5
+// #define OLED_SCROLL_TIMEOUT_RIGHT
+// #define 
+// #define 
+// #define 
+// #define 
+// #define 
+// #define 
+// #define 
+// #define 
+// #define 
+// #define 
+// #define 
+// #define 
